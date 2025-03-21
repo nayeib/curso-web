@@ -57,8 +57,11 @@ function actualizarCarrito() {
         <div class="carrito-total">
             <strong>Total: €${total.toFixed(2)}</strong>
         </div>
-        <button id="comprar-btn" onclick="comprar()">Comprar por WhatsApp</button>
     </div>`;
+
+    if (carrito.length > 0) {
+        contenidoCarrito += '<button id="comprar-btn" onclick="comprar()">Comprar por WhatsApp</button>';
+    }
 
     carritoDiv.innerHTML = contenidoCarrito;
 }
