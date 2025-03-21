@@ -92,6 +92,23 @@ function comprar() {
     window.open(`https://wa.me/34614227487?text=${mensajeCodificado}`);
 }
 
+// Función para actualizar el total del carrito
+function actualizarTotal() {
+    const total = carrito.reduce((sum, item) => sum + item.precio * item.cantidad, 0);
+    document.getElementById('total').textContent = `Total: €${total.toFixed(2)}`;
+}
+
+// Función para generar el mensaje de WhatsApp
+function generarMensajeWhatsApp() {
+    let mensaje = 'Hola quiero comprar:\n';
+    carrito.forEach(item => {
+        mensaje += `${item.cantidad}x ${item.nombre} - €${(item.precio * item.cantidad).toFixed(2)}\n`;
+    });
+    const total = carrito.reduce((sum, item) => sum + item.precio * item.cantidad, 0);
+    mensaje += `\nTotal: €${total.toFixed(2)}`;
+    return encodeURIComponent(mensaje);
+}
+
 // Configurar el botón de WhatsApp
 document.getElementById('whatsapp-btn').onclick = function() {
     window.open('https://wa.me/34614227487');
