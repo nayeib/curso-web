@@ -1,7 +1,7 @@
 /* Estilos generales */
 body {
     font-family: 'Poppins', sans-serif; /* Fuente elegante y legible */
-    background: linear-gradient(to bottom, #ffe5ec, #ffcad4); /* Degradado pastel */
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef, #dee2e6); /* Degradado suave y profesional */
     margin: 0;
     padding: 0;
     text-align: center;
@@ -92,7 +92,9 @@ nav button:hover {
 
 /* Contenedor principal */
 main {
-    padding: 20px;
+    padding: 10px;
+    width: 100%;
+    max-width: 100%;
 }
 
 /* Estilos de las listas (categorías, productos, carrito) */
@@ -110,8 +112,11 @@ main {
 
 /* Fondo de color para cada "ventana" */
 #categorias {
-    background-color: #ffb6c1; /* Rosa pastel */
-
+    background-color: #ffb6c1;
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
 }
 
 #productos {
@@ -127,35 +132,39 @@ main {
 /* Diseño en rejilla para los elementos */
 .lista.grid-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 30px;
+    row-gap: 30px;
+    column-gap: 30px;
     padding: 15px;
     justify-content: center;
     width: 100%;
     height: auto;
-    max-width: 1200px;
     margin: 0 auto;
+    box-sizing: border-box;
 }
 
 /* Estilos para el carrito */
 .carrito-items {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    padding: 15px;
+    gap: 5px;
+    padding: 10px;
     background: white;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 100%;
 }
 
 .carrito-item {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    gap: 10px;
     align-items: center;
     padding: 10px;
     background: #f8f9fa;
     border-radius: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .carrito-item-img {
@@ -193,21 +202,35 @@ main {
     margin-top: 15px;
     cursor: pointer;
     font-size: 1.1em;
+    transition: transform 0.3s ease;
+    display: none;
+}
+
+#comprar-btn:hover {
+    transform: scale(1.02);
+}
+
+.carrito-items:not(:empty) + #comprar-btn {
+    display: block;
 }
 
 /* Estilos para productos */
 .producto {
-    background: white;
+    background: linear-gradient(to bottom, #ffffff, #f8f9fa);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    height: 100%;
-    min-height: 300px;
-    transition: transform 0.3s ease;
+    padding: 10px;
+    padding-bottom: 60px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    min-height: 250px;
+    margin: 0;
+    transition: all 0.3s ease;
+    border: 2px solid #e9ecef;
+    width: 80%;
+    position: relative;
 }
 
 .producto:hover {
@@ -216,14 +239,15 @@ main {
 
 .producto img {
     width: 100%;
-    height: 200px;
-    object-fit: cover;
+    height: 150px;
+    object-fit: contain;
     border-radius: 8px;
     margin-bottom: 10px;
+    transition: transform 0.3s ease;
 }
 
 .producto h3 {
-    margin: 10px 0;
+    margin: 5px 0;
     font-size: 1.1em;
     text-align: center;
 }
@@ -232,7 +256,7 @@ main {
     color: #ff4757;
     font-weight: bold;
     font-size: 1.2em;
-    margin: 10px 0;
+    margin: 5px 0;
 }
 
 .producto button {
@@ -242,18 +266,38 @@ main {
     padding: 8px 15px;
     border-radius: 5px;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: all 0.3s ease;
+    width: calc(100% - 20px);
+    font-size: 16px;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+}
+
+.producto button:active {
+    transform: scale(0.95);
 }
 
 .producto button:hover {
     background: #ff2e43;
+    transform: scale(1.05);
+}
+
+@keyframes agregarAlCarrito {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.producto button.agregando {
+    animation: agregarAlCarrito 0.5s ease;
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
     .lista.grid-container {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 10px;
+        gap: 20px;
         padding: 10px;
     }
 
@@ -290,20 +334,20 @@ main {
 
 .categoria-btn {
     padding: 12px 20px;
-    background-color: #ffb6c1; /* Rosa pastel */
+    background-color: #6c757d; /* Color más profesional */
     border: none;
-    border-radius: 8px; /* Bordes más redondeados */
+    border-radius: 10px;
     text-align: center;
     cursor: pointer;
     font-size: 18px;
     font-weight: bold;
     color: #fff;
     display: inline-block;
-    width: 100%; /* Para que ocupe todo el ancho disponible */
-    max-width: 180px; /* Limitar el ancho máximo */
-    margin: 10px auto; /* Centrar los botones */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-    transition: background-color 0.3s, transform 0.3s;
+    width: 100%;
+    max-width: 180px;
+    margin: 15px auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
 }
 
 .categoria-btn:hover {
@@ -354,18 +398,21 @@ main {
 
 /* Botón de comprar en el carrito */
 #comprar-btn {
-    background: #28c76f;
+    background: #0066ff;
     color: white;
-    padding: 10px 20px;
+    padding: 15px 25px;
     border-radius: 8px;
     font-size: 18px;
     cursor: pointer;
     border: none;
-    display: none;
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
 }
 
 #comprar-btn:hover {
-    background: #20a85d;
+    background: #0052cc;
 }
 .oculto {
     display: none; /* Ocultamos los divs con la clase "oculto" */
