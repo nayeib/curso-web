@@ -297,12 +297,25 @@ main {
 /* Responsive design */
 @media (max-width: 768px) {
     .lista.grid-container {
-        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
         padding: 10px;
+        width: 100%;
+        max-width: 100vw;
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
+
+    .producto {
+        width: 100%;
+        margin: 0;
+        box-sizing: border-box;
     }
 
     .producto img {
         height: 150px;
+        width: 100%;
+        object-fit: contain;
     }
 
     .producto h3 {
@@ -322,6 +335,7 @@ main {
 @media (max-width: 480px) {
     .lista.grid-container {
         grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 10px;
     }
 
     .producto img {
