@@ -1,0 +1,372 @@
+/* Estilos generales */
+body {
+    font-family: 'Poppins', sans-serif; /* Fuente elegante y legible */
+    background: linear-gradient(to bottom, #ffe5ec, #ffcad4); /* Degradado pastel */
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* Estilos del encabezado */
+header {
+    background: #db2442; /* Rojo vibrante como color principal */
+    padding: 1px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para efecto de profundidad */
+}
+
+h1 {
+    margin: 0;
+    font-size: 24px;
+    color: #fff; /* Texto en blanco para contraste */
+}
+
+/* Barra de navegación */
+nav {
+    display: flex; /* Pone los botones en una fila */
+    
+    justify-content: space-evenly; /* Distribuye los botones equitativamente */
+    align-items: center; /* Centra los botones verticalmente */
+    background: #ff4757; /* Rosa fuerte para la barra de navegación */
+    padding: 0px 0;
+}
+
+/* Botones de navegación */
+nav button {
+    display: flex; /* Mantiene los botones en línea */
+    justify-content: center; /* Centra el texto */
+    align-items: center; /* Centra el contenido verticalmente */
+    background: #ff4757; /* Tono más brillante para los botones */
+    border: none;
+    padding: 10px 10px; /* Espaciado adicional en los botones */
+    margin: 5px;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #fff; /* Texto en blanco para mejor visibilidad */
+    cursor: pointer;
+    transition: background 0.3s; /* Efecto de cambio de color */
+}
+
+/* Cambio de color al pasar el mouse sobre los botones */
+nav button:hover {
+    background: #b22234; /* Rojo oscuro para el efecto hover */
+}
+
+/* Logo de la tienda */
+.logo {
+    width: 200px; /* Ajuste del tamaño del icono */
+    height: 60px;
+    background: none;
+}
+
+/* Iconos con fondo transparente */
+.icono-transparente {
+    width: 30px; /* Ajuste del tamaño del icono */
+    height: 30px;
+    background: none;
+}
+
+/* Botón de WhatsApp */
+#whatsapp-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#whatsapp-btn img {
+    position: absolute; /* Esto lo saca del flujo normal y lo posiciona en relación al contenedor */
+    right: 10px; /* Mueve el botón a la derecha */
+    top: 20px; /* Lo sube 10 píxeles desde la parte superior */
+    width: 30px;
+    height: 30px;
+}
+
+/* Estilos del icono del carrito */
+#iconoCarrito {
+    width: 30px; /* Ancho del icono del carrito */
+    height: 30px; /* Alto del icono del carrito */
+    filter: invert(100%); /* Invierte los colores de la imagen */
+}
+
+/* Contenedor principal */
+main {
+    padding: 20px;
+}
+
+/* Estilos de las listas (categorías, productos, carrito) */
+.lista {
+    display: none; /* Se ocultan por defecto */
+    padding: 20px;
+    min-height: 300px; /* Asegura suficiente altura para notar los cambios */
+}
+
+/* Muestra la lista activa */
+.lista.activa {
+    display: block;
+    
+}
+
+/* Fondo de color para cada "ventana" */
+#categorias {
+    background-color: #ffb6c1; /* Rosa pastel */
+
+}
+
+#productos {
+    background-color: #ffffff; /* Blanco */
+    
+}
+
+#carrito {
+    background-color: #add8e6; /* Celeste pastel */
+
+}
+
+/* Diseño en rejilla para los elementos */
+.lista.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 15px;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Estilos para el carrito */
+.carrito-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.carrito-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.carrito-item-img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.carrito-item button {
+    background: #ff4757;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.carrito-total {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    text-align: right;
+}
+
+#comprar-btn {
+    width: 100%;
+    padding: 15px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-top: 15px;
+    cursor: pointer;
+    font-size: 1.1em;
+}
+
+/* Estilos para productos */
+.producto {
+    background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    height: 100%;
+    min-height: 300px;
+    transition: transform 0.3s ease;
+}
+
+.producto:hover {
+    transform: translateY(-5px);
+}
+
+.producto img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.producto h3 {
+    margin: 10px 0;
+    font-size: 1.1em;
+    text-align: center;
+}
+
+.producto p {
+    color: #ff4757;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
+.producto button {
+    background: #ff4757;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.producto button:hover {
+    background: #ff2e43;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .lista.grid-container {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .producto img {
+        height: 150px;
+    }
+
+    .producto h3 {
+        font-size: 1em;
+    }
+
+    .producto p {
+        font-size: 1.1em;
+    }
+
+    .producto button {
+        padding: 6px 12px;
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 480px) {
+    .lista.grid-container {
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    }
+
+    .producto img {
+        height: 120px;
+    }
+}
+.lista.oculto {
+    display: none;
+}
+
+.categoria-btn {
+    padding: 12px 20px;
+    background-color: #ffb6c1; /* Rosa pastel */
+    border: none;
+    border-radius: 8px; /* Bordes más redondeados */
+    text-align: center;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    display: inline-block;
+    width: 100%; /* Para que ocupe todo el ancho disponible */
+    max-width: 180px; /* Limitar el ancho máximo */
+    margin: 10px auto; /* Centrar los botones */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.categoria-btn:hover {
+    background-color: #ff8da1; /* Rosa más oscuro al pasar el ratón */
+    transform: translateY(-4px); /* Efecto de levantar el botón al pasar el ratón */
+}
+
+@media (min-width: 768px) {
+    .categoria-btn {
+        width: auto; /* Para pantallas más grandes, no ocupar todo el ancho */
+        display: inline-block;
+        margin: 10px; /* Espaciado entre botones */
+    }
+}
+
+.categoria-btn-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+/* Estilo de los productos y categorías */
+.producto, .categoria {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1); /* Efecto de sombra */
+    transition: transform 0.2s;
+}
+
+/* Efecto al pasar el mouse sobre los productos */
+.producto:hover, .categoria:hover {
+    transform: scale(1.05);
+}
+
+/* Estilos del carrito */
+#carrito {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+#mensajeCarrito {
+    font-size: 18px;
+    color: #555;
+}
+
+/* Botón de comprar en el carrito */
+#comprar-btn {
+    background: #28c76f;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    border: none;
+    display: none;
+}
+
+#comprar-btn:hover {
+    background: #20a85d;
+}
+.oculto {
+    display: none; /* Ocultamos los divs con la clase "oculto" */
+}

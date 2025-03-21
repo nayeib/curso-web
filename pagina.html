@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Pequeño Festín</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Encabezado con la imagen del logo y botón de WhatsApp -->
+    <header>
+        <div class="header-top">
+            <img src="imagenes/pequenoFestin.png" alt="Pequeño Festín" class="logo">
+            <button id="whatsapp-btn">
+                <img src="imagenes/whatsapp.png" alt="WhatsApp" class="icono-transparente">
+            </button>
+        </div>
+    </header>
+        <!-- Botones de navegación alineados en una fila -->
+        <nav class="nav-bar">
+            <button onclick="mostrarLista('categorias')">Categorías</button>
+            <button onclick="mostrarLista('productos')">Productos</button>
+            <button onclick="mostrarLista('carrito')">Carrito
+                <img src="imagenes/carrito-de-compras.png" alt="Carrito" id="iconoCarrito" class="icono-transparente">
+                <span id="notificacionCarrito"></span>
+            </button>
+        </nav>
+    
+    
+    <!-- Contenido principal donde se mostrarán las listas -->
+    <main>
+        <!-- Sección de categorías (se llenará dinámicamente con JS) -->
+        <div id="categorias" class="lista grid-container">
+            <!-- Categorías generadas dinámicamente -->
+        </div>
+        
+        <!-- Sección de productos (se llenará dinámicamente con JS) -->
+        <div id="productos" class="lista  grid-container">
+            <!-- Ejemplo de producto -->
+            <div class="producto">
+                <img src="imagenes/bits-hot-asteroids.jpg" alt="Ejemplo de producto" class="icono-transparente-productoImg">
+                <h3>Nombre del producto</h3>
+                <p>€10.00</p>
+                <button onclick="agregarAlCarrito('Nombre del producto', 10.00)">Agregar</button>
+            </div>
+        </div>
+        
+        <!-- Sección del carrito -->
+        <div id="carrito" class="lista  grid-container">
+            <p id="mensajeCarrito">No hay productos en el carrito aún.</p>
+            <button id="comprar-btn" onclick="comprar()">Comprar</button>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
