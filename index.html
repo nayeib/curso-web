@@ -35,21 +35,18 @@
         </div>
         
         <!-- Sección de productos (se llenará dinámicamente con JS) -->
-        <div id="productos" class="lista  grid-container">
-            <!-- Ejemplo de producto -->
-            <div class="producto">
-                <img src="imagenes/bits-hot-asteroids.jpg" alt="Ejemplo de producto" class="icono-transparente-productoImg">
-                <h3>Nombre del producto</h3>
-                <p>€10.00</p>
-                <button onclick="agregarAlCarrito('Nombre del producto', 10.00)">Agregar</button>
-            </div>
+        <div id="productos" class="lista grid-container">
+            <!-- La barra de búsqueda se insertará aquí dinámicamente -->
+            <!-- Productos generados dinámicamente -->
         </div>
         
         <!-- Sección del carrito -->
-        <div id="carrito" class="lista  grid-container">
+        <div id="carrito" class="lista grid-container">
             <p id="mensajeCarrito">No hay productos en el carrito aún.</p>
-            <button id="comprar-btn" onclick="comprar()">Comprar</button>
         </div>
+
+        <!-- Botón flotante de ir al carrito -->
+        <button class="floating-cart-button" style="display: none;">Ir al carrito (0)</button>
     </main>
 
     <script src="script.js"></script>
