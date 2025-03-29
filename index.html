@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Pequeño Festín</title>
     <link rel="stylesheet" href="styles.css">
+
 </head>
 <body>
     <!-- Encabezado con la imagen del logo y botón de WhatsApp -->
@@ -50,5 +51,33 @@
     </main>
 
     <script src="script.js"></script>
+    <div class="modal-container">
+        <div class="modal-content">
+            <button class="close-btn">×</button>
+            
+            <div class="product-header">
+                <h2 class="product-name">Nombre del Producto</h2>
+                <span class="featured-tag">Destacado</span>
+            </div>
+
+            <div class="product-image-container">
+                <button class="nav-btn prev-btn">‹</button>
+                <img src="imagenes/not-found.webp" alt="Producto" class="product-image">
+                <button class="nav-btn next-btn">›</button>
+            </div>
+
+            <p class="product-description">Descripción detallada del producto que explica sus características y beneficios principales.</p>
+
+            <div class="price-section">
+                <div class="offer-tag">¡Oferta Especial!</div>
+                <div class="price-box">
+                    <div class="old-price">€29.99</div>
+                    <div class="current-price">€19.99</div>
+                </div>
+            </div>
+
+            <button class="add-to-cart">Agregar al Carrito</button>
+        </div>
+    </div>
 </body>
 </html>
