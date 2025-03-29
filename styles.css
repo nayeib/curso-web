@@ -100,6 +100,35 @@ main {
     width: 100%;
     max-width: 100%;
 }
+.oferta {
+    background-color: #f13c0f; /* Amarillo */
+    color: white; /* Texto blanco */
+    padding: 5px 10px; /* Espaciado alrededor del texto */
+    border-radius: 5px; /* Bordes redondeados */
+    font-size: 10px; /* Ajusta el tamaño de la fuente */
+    font-weight: bold; /* Texto en negrita */
+    position: absolute;
+    top: 75%; /* Ajuste para que se vea encima del precio */
+    left: 50%; /* Centra el recuadro horizontalmente */
+    transform: translateX(-50%); /* Ajuste para centrar correctamente */
+    animation: pulsar 1.5s infinite; /* Animación para llamar la atención */
+    z-index: 10; /* Asegura que esté sobre otros elementos */
+}
+
+
+/* Animación para pulsar el recuadro de la oferta */
+@keyframes pulsar {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1); /* Aumenta ligeramente el tamaño */
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
 
 /* Estilos de las listas (categorías, productos, carrito) */
 .lista {
@@ -116,12 +145,13 @@ main {
 
 /* Fondo de color para cada "ventana" */
 #categorias {
-    background-color: #ffb6c1;
-    position: absolute;
-    left: 0;
-    right: 0;
-    width: 100%;
+    background-color: #ffb6c1; /* Color de fondo rosado claro */
+    position: absolute; /* Posiciona el contenedor de forma absoluta dentro de su contenedor padre */
+    left: 0; /* Coloca el borde izquierdo en el extremo izquierdo de la ventana */
+    right: 0; /* Coloca el borde derecho en el extremo derecho de la ventana */
+    width: calc(100% - 20px); /* Ajusta el ancho para que no se desborde (100% menos 20px de margen total) */
 }
+
 
 #productos {
     background-color: #ffffff; /* Blanco */
@@ -135,19 +165,19 @@ main {
 
 /* Diseño en rejilla para los elementos */
 .lista.grid-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 30px;
-    row-gap: 30px;
-    column-gap: 30px;
-    padding: 15px;
-    justify-content: center;
-    width: 100%;
-    height: auto;
-    margin: 0 auto;
-    box-sizing: border-box;
-    position: relative;
+    display: grid; /* Utiliza un contenedor de tipo 'grid' para organizar los elementos en una cuadrícula */
+    grid-template-columns: repeat(3, 1fr) !important; /* Crea 3 columnas iguales en el grid */
+    gap: 30px; /* Espacio entre los elementos en las filas y columnas */
+    row-gap: 30px; /* Espacio entre las filas */
+    column-gap: 30px; /* Espacio entre las columnas */
+    padding: 20px; /* Espaciado interno del contenedor, creando margen alrededor de los elementos */
+    justify-content: center; /* Centra el contenido dentro del contenedor */
+    width: 100%; /* El contenedor ocupará todo el ancho disponible */
+    height: auto; /* La altura se ajustará automáticamente según el contenido */
+    margin: 0 auto; /* Centra el contenedor horizontalmente */
+    box-sizing: border-box; /* Incluye el padding y los bordes en el cálculo del tamaño */
 }
+
 
 /* Animación para productos al agregar al carrito */
 @keyframes addToCart {
@@ -277,7 +307,7 @@ background: white;
 .carrito-items {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 10px;
     padding: 10px;
     padding-bottom: 100px;
     background: white;
@@ -288,30 +318,71 @@ background: white;
 
 .carrito-item {
     display: grid;
-    grid-template-columns: auto 1fr auto auto;
+    grid-template-columns: 1fr 2fr 1fr 1fr 1fr; /* Se ajusta para la versión móvil */
     gap: 10px;
     align-items: center;
     padding: 10px;
     background: #f8f9fa;
     border-radius: 5px;
     margin-bottom: 5px;
+    box-sizing: border-box;
 }
 
 .carrito-item-img {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
+    width: 100px; /* Establece un tamaño estándar para las imágenes */
+    height: 100px; /* Mantiene una proporción cuadrada */
+    object-fit: cover; /* Asegura que las imágenes no se deformen */
     border-radius: 5px;
-    margin-right: 10px;
 }
 
-.carrito-item button {
+/* Media Query para pantallas más pequeñas (móviles) */
+@media (max-width: 600px) {
+    .carrito-item {
+        grid-template-columns: 1fr 2fr; /* Solo dos columnas en móviles */
+        padding: 8px;
+    }
+
+    .carrito-item-img {
+        width: 80px; /* Ajusta el tamaño de la imagen en dispositivos más pequeños */
+        height: 80px;
+    }
+}
+
+
+.carrito-item .btn-eliminar {
     background: #ff4757;
     color: white;
     border: none;
     padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.cantidad-controles {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-cantidad {
+    background: #6c757d;
+    color: white;
+    border: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.cantidad-valor {
+    font-weight: bold;
+    min-width: 20px;
+    text-align: center;
 }
 
 .carrito-total {
@@ -390,79 +461,7 @@ background: white;
     80%, 100% { transform: translateY(calc(-100% + 60px)); }
 }
 
-.producto.vista-detallada {
-    position: fixed !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    width: 90%;
-    max-width: 600px;
-    height: auto;
-    max-height: 90vh;
-    z-index: 1000;
-    background: white;
-    overflow-y: auto;
-    padding: 20px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.2);
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    pointer-events: auto;
-    user-select: auto;
-}
 
-.producto.vista-detallada .cerrar-detalle {
-    position: absolute !important;
-    top: 10px !important;
-    right: 10px !important;
-    background: #ff4757;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    font-size: 18px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1001;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    pointer-events: auto;
-}
-.producto.vista-detallada .nombre-producto {
-    height: auto;
-    overflow: visible;
-    margin-top: 40px;
-}
-
-.producto.vista-detallada .nombre-producto h3 {
-    position: static;
-    animation: none;
-}
-
-.producto.vista-detallada .descripcion-producto {
-    margin: 20px 0;
-    text-align: left;
-    padding: 10px;
-    background: #f8f9fa;
-    border-radius: 8px;
-}
-
-.overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-}
-
-.overlay.activo {
-    display: block;
-}
 
 .producto:hover {
     transform: translateY(-5px);
@@ -539,19 +538,26 @@ background: white;
 }
 
 @keyframes agregarAlCarrito {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px) rotate(-5deg); }
+    50% { transform: translateX(5px) rotate(5deg); }
+    75% { transform: translateX(-5px) rotate(-5deg); }
+    100% { transform: translateX(0); }
 }
 
 .producto button.agregando {
-    animation: agregarAlCarrito 0.5s ease;
+    animation: shakeProduct 0.5s ease;
+}
+
+.product-image.agregando {
+    animation: shakeProduct 0.5s ease-in-out;
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
     .lista.grid-container {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+
         gap: 15px;
         padding: 10px;
         width: 100%;
@@ -599,24 +605,24 @@ background: white;
 .lista.oculto {
     display: none;
 }
-
 .categoria-btn {
-    padding: 12px 20px;
-    background-color: #6c757d; /* Color más profesional */
-    border: none;
-    border-radius: 10px;
-    text-align: center;
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: bold;
-    color: #fff;
-    display: inline-block;
-    width: 100%;
-    max-width: 180px;
-    margin: 15px auto;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transition: all 0.3s ease;
+    padding: 12px 20px; /* Espaciado interno del botón (12px arriba y abajo, 20px a los lados) */
+    background-color: #6c757d; /* Color de fondo gris, más profesional y neutral */
+    border: none; /* Eliminar el borde por defecto del botón */
+    border-radius: 10px; /* Bordes redondeados para un diseño más suave */
+    text-align: center; /* Alineación del texto al centro del botón */
+    cursor: pointer; /* Cambia el cursor a mano cuando se pasa por encima, indicando que es clickeable */
+    font-size: 18px; /* Tamaño de la fuente del texto */
+    font-weight: bold; /* Hace el texto en negrita para que resalte */
+    color: #fff; /* Color del texto en blanco */
+    display: inline-block; /* Asegura que el botón se comporte como un bloque en línea, lo que permite centrarlo */
+    width: 100%; /* El botón ocupará todo el ancho disponible en su contenedor */
+    max-width: 180px; /* Limita el ancho máximo del botón a 180px para que no crezca demasiado en pantallas grandes */
+    margin: 15px auto; /* Centra el botón en su contenedor con un margen de 15px arriba y abajo */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Sombra suave para darle un efecto de profundidad */
+    transition: all 0.3s ease; /* Transición suave para los cambios de estilo (por ejemplo, al pasar el ratón sobre el botón) */
 }
+
 
 .categoria-btn:hover {
     background-color: #ff8da1; /* Rosa más oscuro al pasar el ratón */
@@ -652,6 +658,211 @@ background: white;
     transform: scale(1.05);
 }
 
+/* Estilos del Modal */
+.modal-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.modal-content {
+    position: relative;
+    background: white;
+    width: 90%;
+    max-width: 800px;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    margin: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.close-btn {
+    position: fixed;
+    overflow: visible !important;  
+    top: 0px;
+    right: 10px;
+    background: #db2442;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+    z-index: 1001;
+}
+
+.product-header {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.product-name {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.featured-tag {
+    background: #ffd700;
+    padding: 5px 10px;
+    transform: rotate(-5deg);
+    font-size: 14px;
+    position: relative;
+    display: inline-block;
+    clip-path: polygon(0 0, 100% 5%, 95% 95%, 5% 100%);
+}
+
+.product-image-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    max-height: 400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.product-image {
+    width: 100%;
+    max-width: 100%; /* No excede el contenedor */
+    height: auto; /* Mantiene la proporción */
+    max-height: 400px; /* No supera esta altura */
+    border-radius: 10px;
+    object-fit: contain; /* Ajusta la imagen sin recortarla */
+}
+
+@media (max-width: 768px) {
+    .product-image {
+        max-height: 150px; /* Reduce el tamaño en móviles */
+    }
+}
+
+.nav-btn {
+    position: fixed;
+    background: #2196F3;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 1001;
+    top: 55%;
+    transform: translateY(-50%);
+}
+
+.prev-btn { left: 10px; }
+.next-btn { right: 10px; }
+
+.product-description {
+    margin: 20px 0;
+    line-height: 1.6;
+    color: #666;
+}
+
+.price-section {
+    position: relative;
+    margin: 20px 0;
+}
+
+.offer-tag {
+    background: #ffd700;
+    padding: 8px 15px;
+    display: none;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+    transform: translate(10px, -5px);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 20% 100%);
+}
+
+.price-box {
+    background: #4CAF50;
+    padding: 10px 20px;
+    color: white;
+    display: inline-block;
+    margin-top: -5px;
+    position: relative;
+    z-index: 2;
+}
+
+.old-price {
+    font-size: 14px;
+    text-decoration: line-through;
+    opacity: 0.8;
+}
+
+.current-price {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.add-to-cart {
+    display: block;
+    width: 200px;
+    margin: 20px auto;
+    padding: 15px;
+    background: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+}
+
+.add-to-cart:hover {
+    background: #1976D2;
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        padding: 15px;
+    }
+
+    .product-name {
+        font-size: 20px;
+    }
+
+    .nav-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+    }
+
+    .current-price {
+        font-size: 20px;
+    }
+}
+
 /* Estilos del carrito */
 #carrito {
     background: rgba(255, 255, 255, 0.8);
@@ -674,7 +885,7 @@ background: white;
     cursor: pointer;
     border: none;
     display: block;
-    width: 100%;
+    width: 80%;
     margin-top: 20px;
     transition: background-color 0.3s ease;
 }
