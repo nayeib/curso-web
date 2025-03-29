@@ -25,7 +25,16 @@ function actualizarNotificacionCarrito() {
 
 // Función para agregar productos al carrito
 function agregarAlCarrito(nombre, precio, productoDiv) {
-    carrito.push({ nombre, precio });
+    // Verificar si el producto ya existe en el carrito
+    const productoExistente = carrito.find(item => item.nombre === nombre);
+    
+    if (productoExistente) {
+        // Si el producto ya existe, incrementar la cantidad
+        productoExistente.cantidad += 1;
+    } else {
+        // Si el producto no existe, agregarlo con cantidad 1
+        carrito.push({ nombre, precio, cantidad: 1 });
+    }
     
     // Aplicar animación al agregar al carrito
     if (productoDiv) {
@@ -45,7 +54,7 @@ function actualizarBotonFlotanteCarrito() {
     const botonFlotante = document.querySelector('.floating-cart-button');
     if (carrito.length > 0 && document.querySelector('#productos').classList.contains('activa')) {
         botonFlotante.style.display = 'block';
-        botonFlotante.textContent = `Ir al carrito (${carrito.length})`;
+        botonFlotante.textContent = `Ir al carrito `;
         botonFlotante.onclick = () => mostrarLista('carrito');
     } else {
         botonFlotante.style.display = 'none';
@@ -65,14 +74,22 @@ function actualizarCarrito() {
     let contenidoCarrito = '<div class="carrito-items">';
     
     carrito.forEach((producto, index) => {
-        total += producto.precio;
+        // Calcular el subtotal para este producto
+        const subtotal = producto.precio * producto.cantidad;
+        total += subtotal;
+        
         const nombreImagen = producto.nombre.replace(/ /g, '-');
         contenidoCarrito += `
             <div class="carrito-item">
                 <img src="imagenes/${nombreImagen}.jpg" alt="${producto.nombre}" class="carrito-item-img" onerror="this.src='imagenes/not-found.webp'" style="max-width: 100px; height: auto;">
                 <span>${producto.nombre}</span>
-                <span>€${producto.precio.toFixed(2)}</span>
-                <button onclick="eliminarDelCarrito(${index})">Eliminar</button>
+                <div class="cantidad-controles">
+                    <button onclick="decrementarCantidad(${index})" class="btn-cantidad">-</button>
+                    <span class="cantidad-valor">${producto.cantidad}</span>
+                    <button onclick="incrementarCantidad(${index})" class="btn-cantidad">+</button>
+                </div>
+                <span>€${subtotal.toFixed(2)}</span>
+                <button onclick="eliminarDelCarrito(${index})" class="btn-eliminar">Eliminar</button>
             </div>
         `;
     });
@@ -97,6 +114,23 @@ function eliminarDelCarrito(index) {
     actualizarCarrito();
 }
 
+// Función para incrementar la cantidad de un producto en el carrito
+function incrementarCantidad(index) {
+    carrito[index].cantidad += 1;
+    actualizarCarrito();
+}
+
+// Función para decrementar la cantidad de un producto en el carrito
+function decrementarCantidad(index) {
+    if (carrito[index].cantidad > 1) {
+        carrito[index].cantidad -= 1;
+    } else {
+        // Si la cantidad llega a 0, eliminar el producto
+        eliminarDelCarrito(index);
+    }
+    actualizarCarrito();
+}
+
 // Función para realizar la compra vía WhatsApp
 function comprar() {
     if (carrito.length === 0) {
@@ -108,8 +142,9 @@ function comprar() {
     let total = 0;
 
     carrito.forEach(producto => {
-        mensaje += `- ${producto.nombre}: €${producto.precio.toFixed(2)}\n`;
-        total += producto.precio;
+        const subtotal = producto.precio * producto.cantidad;
+        mensaje += `- ${producto.cantidad}x ${producto.nombre}: €${subtotal.toFixed(2)}\n`;
+        total += subtotal;
     });
 
     mensaje += `\nTotal: €${total.toFixed(2)}`;
@@ -163,7 +198,10 @@ async function cargarProductos() {
                 nombre: datosProducto[0],
                 categoria: datosProducto[1],
                 precio: parseFloat(datosProducto[2]),
-                cantidad: parseFloat(datosProducto[3])
+                cantidad: parseFloat(datosProducto[3]),
+                descripcion: datosProducto[4] || '',
+                oferta: datosProducto[5] ? datosProducto[5].trim() : '',
+                destacado: datosProducto[6] || 'no'
             });
         }
 
@@ -192,6 +230,170 @@ async function cargarProductos() {
 }
 
 // Función que maneja el clic en los botones de categoría
+// Función para mostrar el modal de producto
+function mostrarModalProducto(producto) {
+    const modalContainer = document.querySelector('.modal-container');
+    const modalContent = modalContainer.querySelector('.modal-content');
+
+    // Actualizar contenido del modal
+    modalContent.querySelector('.product-name').textContent = producto.nombre;
+    modalContent.querySelector('.product-description').textContent = producto.descripcion || 'Sin descripción disponible';
+    
+    // Actualizar etiqueta de destacado
+    const featuredTag = modalContent.querySelector('.featured-tag');
+    featuredTag.style.display = producto.destacado === 'si' ? 'inline-block' : 'none';
+
+    // Configurar navegación de imágenes
+    const nombreImagen = producto.nombre.replace(/ /g, '-');
+    const imagenProducto = modalContent.querySelector('.product-image');
+    imagenProducto.src = 'imagenes/loading.gif';
+    const prevBtn = modalContent.querySelector('.prev-btn');
+    const nextBtn = modalContent.querySelector('.next-btn');
+    
+    // Buscar todas las imágenes disponibles para este producto
+    let imagenes = [];
+    let imagenActual = 0;
+    
+    // Función para verificar si una imagen existe
+    const verificarImagen = (url) => {
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => resolve(true);
+            img.onerror = () => resolve(false);
+            img.src = url;
+        });
+    };
+
+    // Función para actualizar la imagen mostrada
+    const actualizarImagen = () => {
+        imagenProducto.src = 'imagenes/loading.gif';
+        if (imagenes.length > 0) {
+            const img = new Image();
+            img.onload = () => {
+                imagenProducto.src = imagenes[imagenActual];
+            };
+            img.src = imagenes[imagenActual];
+        } else {
+            imagenProducto.src = 'imagenes/not-found.webp';
+        }
+    };
+
+    // Función para cargar las imágenes disponibles
+    const cargarImagenes = async () => {
+        const baseUrl = `imagenes/${nombreImagen}`;
+        imagenes = [];
+        
+        // Verificar la imagen principal
+        if (await verificarImagen(`${baseUrl}.jpg`)) {
+            imagenes.push(`${baseUrl}.jpg`);
+        }
+        
+        // Verificar imágenes adicionales (2, 3, etc.)
+        let index = 2;
+        while (await verificarImagen(`${baseUrl}${index}.jpg`)) {
+            imagenes.push(`${baseUrl}${index}.jpg`);
+            index++;
+        }
+
+        // Mostrar/ocultar botones de navegación según cantidad de imágenes
+        if (imagenes.length > 1) {
+            prevBtn.style.display = 'block';
+            nextBtn.style.display = 'block';
+            prevBtn.style.backgroundColor = getComputedStyle(document.querySelector('.agregar-carrito')).backgroundColor;
+            nextBtn.style.backgroundColor = getComputedStyle(document.querySelector('.agregar-carrito')).backgroundColor;
+        } else {
+            prevBtn.style.display = 'none';
+            nextBtn.style.display = 'none';
+        }
+
+        actualizarImagen();
+    };
+
+    // Configurar navegación
+    prevBtn.onclick = (e) => {
+        e.stopPropagation();
+        imagenActual = (imagenActual - 1 + imagenes.length) % imagenes.length;
+        actualizarImagen();
+    };
+
+    nextBtn.onclick = (e) => {
+        e.stopPropagation();
+        imagenActual = (imagenActual + 1) % imagenes.length;
+        actualizarImagen();
+    };
+
+    // Iniciar carga de imágenes
+    cargarImagenes();
+
+    // Actualizar precios y oferta
+    const offerTag = modalContent.querySelector('.offer-tag');
+    const oldPrice = modalContent.querySelector('.old-price');
+    const currentPrice = modalContent.querySelector('.current-price');
+// Verificamos si la oferta es válida (no vacía ni nula)
+// Verificamos si el campo oferta tiene un valor válido (no vacío, no nulo y no cero)
+if (producto.oferta !== undefined && producto.oferta !== null && producto.oferta.trim() !== '') { 
+    const descuento = parseFloat(producto.oferta); // Convertimos la oferta a número
+
+    if (!isNaN(descuento) && descuento !== 0) { // Nos aseguramos de que sea un número válido y diferente de 0
+        offerTag.style.display = 'inline-block';
+        offerTag.textContent = `${descuento}%`; // Se muestra el porcentaje de descuento
+
+        oldPrice.style.display = 'block';
+        oldPrice.textContent = `€${producto.precio.toFixed(2)}`;
+
+        // Calculamos el precio con descuento
+        const precioOferta = producto.precio * (1 + descuento / 100);
+        currentPrice.textContent = `€${precioOferta.toFixed(2)}`;
+    } else {
+        ocultarOferta(); // Si el valor no es válido, ocultamos la oferta
+    }
+} else {
+    ocultarOferta(); // Si no hay oferta, se oculta
+}
+
+// Función para ocultar la oferta y mostrar solo el precio normal
+function ocultarOferta() {
+    offerTag.style.display = 'none';
+    oldPrice.style.display = 'none';
+    currentPrice.textContent = `€${producto.precio.toFixed(2)}`;
+}
+
+
+
+    // Configurar botón de agregar al carrito
+    const addToCartBtn = modalContent.querySelector('.add-to-cart');
+    addToCartBtn.onclick = () => {
+        agregarAlCarrito(producto.nombre, producto.precio);
+        
+        // Aplicar animación a la imagen del producto antes de cerrar el modal
+        const imagenProducto = modalContent.querySelector('.product-image');
+        imagenProducto.classList.add('agregando');
+        
+        // Esperar a que termine la animación antes de cerrar el modal
+        setTimeout(() => {
+            imagenProducto.classList.remove('agregando');
+            modalContainer.style.display = 'none';
+        }, 500);
+    };
+
+    // Mostrar modal
+    modalContainer.style.display = 'flex';
+
+    // Configurar botón de cerrar
+    const closeBtn = modalContent.querySelector('.close-btn');
+    closeBtn.onclick = () => {
+        imagenProducto.src = 'imagenes/loading.gif';
+        modalContainer.style.display = 'none';
+    };
+
+    // Cerrar modal al hacer clic fuera del contenido
+    modalContainer.onclick = (e) => {
+        if (e.target === modalContainer) {
+            modalContainer.style.display = 'none';
+        }
+    };
+}
+
 function mostrarProductos(categoria, searchTerm = '') {
     const productosContainer = document.getElementById('productos');
     productosContainer.innerHTML = '';
@@ -260,6 +462,7 @@ function mostrarProductos(categoria, searchTerm = '') {
         if (producto.cantidad > 0) {
             const productoDiv = document.createElement('div');
             productoDiv.className = 'producto';
+            productoDiv.onclick = () => mostrarModalProducto(producto);
             
             const img = new Image();
             const nombreImagen = producto.nombre.replace(/ /g, '-');
@@ -289,21 +492,46 @@ function mostrarProductos(categoria, searchTerm = '') {
             const height = tempDiv.offsetHeight;
             document.body.removeChild(tempDiv);
             
-            if (height > 80) { // Aproximadamente 4 líneas (20px por línea)
-                h3.classList.add('scroll');
-            }
-            
-            nombreContainer.appendChild(h3);
-            productoDiv.appendChild(nombreContainer);
+ // Crear el contenedor para el nombre del producto
+if (height > 80) { // Aproximadamente 4 líneas (20px por línea)
+    h3.classList.add('scroll');
+}
+nombreContainer.appendChild(h3);
+productoDiv.appendChild(nombreContainer);
 
-            const p = document.createElement('p');
-            p.textContent = `€${producto.precio.toFixed(2)}`;
-            productoDiv.appendChild(p);
+// Crear el contenedor para el precio
+const p = document.createElement('p');
 
-            const button = document.createElement('button');
-            button.textContent = 'Agregar';
+// Crear el contenedor para la etiqueta de descuento (solo si hay oferta)
+if (producto.oferta && producto.oferta.trim() !== '' && !isNaN(parseFloat(producto.oferta))) {
+    const descuento = parseFloat(producto.oferta);
+    const precioOferta = producto.precio * (1 + descuento / 100); // Aplicar descuento (descuento negativo resta)
+
+    // Crear el texto con el porcentaje de descuento
+    const descuentoTexto = document.createElement('span');
+    descuentoTexto.classList.add('oferta'); // Se añade la clase CSS para estilizarlo
+    descuentoTexto.textContent = `${descuento}%`; // Mostrar el descuento en formato "-30%"
+
+    // Agregar el texto de descuento encima del precio
+    productoDiv.appendChild(descuentoTexto);
+
+    // Mostrar el precio con descuento
+    p.textContent = `€${precioOferta.toFixed(2)}`; 
+} else {
+    // Si no hay oferta, solo mostrar el precio normal
+    p.textContent = `€${producto.precio.toFixed(2)}`;
+}
+
+productoDiv.appendChild(p);
+
+// Crear el botón "Agregar"
+const button = document.createElement('button');
+button.textContent = 'Agregar';
+
             button.className = 'agregar-carrito';
-            button.onclick = () => {
+            button.onclick = (event) => {
+                // Detener la propagación del evento para que no se abra la vista detallada
+                event.stopPropagation();
                 agregarAlCarrito(producto.nombre, producto.precio, productoDiv);
                 productoDiv.classList.add('producto-agregado');
                 setTimeout(() => {
@@ -312,31 +540,7 @@ function mostrarProductos(categoria, searchTerm = '') {
             };
             productoDiv.appendChild(button);
 
-            // Agregar funcionalidad de vista detallada
-            img.addEventListener('click', () => {
-                productoDiv.classList.add('vista-detallada');
-                
-                const overlay = document.createElement('div');
-                overlay.className = 'overlay activo';
-                document.body.appendChild(overlay);
-
-                const cerrarBtn = document.createElement('button');
-                cerrarBtn.className = 'cerrar-detalle';
-                cerrarBtn.innerHTML = '×';
-                cerrarBtn.onclick = () => {
-                    productoDiv.classList.remove('vista-detallada');
-                    overlay.remove();
-                    cerrarBtn.remove();
-                    if (descripcion) descripcion.remove();
-                };
-
-                const descripcion = document.createElement('div');
-                descripcion.className = 'descripcion-producto';
-                descripcion.textContent = producto.descripcion || 'No hay descripción disponible';
-
-                productoDiv.appendChild(cerrarBtn);
-                productoDiv.appendChild(descripcion);
-            });
+            // Vista detallada eliminada
 
             productosContainer.appendChild(productoDiv);
         }
