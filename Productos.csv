@@ -2,7 +2,7 @@ nombre,categoria,precio,cantidad,descripcion,oferta,destacado
 ACUARIUS LIMON LATA 33 CL,BEBIDAS,1.0,16,"Refresco de limón carbonatado en lata de 33cl",,no
 AGUA MINERAL 1.5L,BEBIDAS,1.0,31.0,"Agua mineral natural en botella de 1.5 litros",,no
 AGUA MINERAL 1.5L PACK 6 UDS.,BEBIDAS,2.2,6.0,"Pack de 6 botellas de agua mineral de 1.5 litros",,no
-AGUA MINERAL 500CL,BEBIDAS,0.5,45.0,"Agua mineral en botella de 500ml",,no
+AGUA MINERAL 500CL,BEBIDAS,0.5,45.0,,,no
 ARTESANA SR,SNACKS,1.4,3.0,"Snack de patatas artesanas estilo rústico",,no
 BIFRUTAS 33CL,BEBIDAS,1.0,23.0,"Bebida refrescante de frutas en lata 33cl",-30,no
 BILLETES GIGANTES OBLEA,CARAMELOS Y GOLOSINAS,0.2,143.0,"Golosina de oblea con forma de billetes grandes",,no
